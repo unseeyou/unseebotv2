@@ -1,8 +1,0 @@
-unseeyousbotplayground > #generalmayhem > unseeyou[650923352097292299]: /nim, args: {'max_marbles': 14}
-BotTestingserver > #testing > unseeyou[650923352097292299]: /hystats, args: {'username': 'unseeyou'}
-BotTestingserver > #testing > unseeyou[650923352097292299]: /hystats, args: {'username': 'unseeyou'}
-BotTestingserver > #testing > unseeyou[650923352097292299]: /hystats, args: {'username': 'technoblade'}
-BotTestingserver > #testing > unseeyou[650923352097292299]: /hystats, args: {'username': 'kayy112'}
-BotTestingserver > #testing > unseeyou[650923352097292299]: /hystats, args: {'username': 'kayy122'}
-BotTestingserver > #testing > unseeyou[650923352097292299]: /hystats, args: {'username': 'dickmaster'}
-BotTestingserver > #testing > unseeyou[650923352097292299]: /hystats, args: {'username': 'unseeyou'}
