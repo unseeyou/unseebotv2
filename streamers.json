@@ -1,0 +1,43 @@
+{
+    "lyr4t": [
+        {
+            "serverID": 999540525336121344,
+            "ChannelID": 1061774662213845053,
+            "message": "[PING] E",
+            "pingroleID": 1064437019163500606
+        }
+    ],
+    "mainourtv": [
+        {
+            "serverID": 999540525336121344,
+            "ChannelID": 1061774662213845053,
+            "message": "[PING] E",
+            "pingroleID": 1064437019163500606
+        }
+    ],
+
+    "tubbo": [
+        {
+            "serverID": 1090802808774742146,
+            "ChannelID": 1090806462290337872,
+            "message": "[PING]  [USER] IS ded frfr!! ---> https://twitch.tv/[USER]",
+            "pingroleID": 1090807258771902494
+        }
+    ],
+    "pokimane": [
+        {
+            "serverID": 1090802808774742146,
+            "ChannelID": 1090806462290337872,
+            "message": "[PING]  [USER] IS LIVE!!! ---> https://twitch.tv/[USER]",
+            "pingroleID": 1090807258771902494
+        }
+    ],
+    "hasanabi": [
+        {
+            "serverID": 1090802808774742146,
+            "ChannelID": 1090806462290337872,
+            "message": "[PING]  [USER] IS LIVE!!! ---> https://twitch.tv/[USER]",
+            "pingroleID": 1090807258771902494
+        }
+    ]
+}
