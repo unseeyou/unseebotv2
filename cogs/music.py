@@ -28,6 +28,16 @@ async def play_you_are_my_sunshine(voice):
     return False
 
 
+async def play_fly_me_to_the_moon(voice):
+    player = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio("fly_me_to_the_moon_nge.mp3"), volume=45)
+    try:
+        voice.play(player)
+        return 0
+    except Exception as err:
+        print(err)
+    return False
+
+
 class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
