@@ -46,6 +46,9 @@ class XKCD(commands.Cog):
             view.add_item(end)
 
             async def nextc(interaction):
+                request = requests.get("https://xkcd.com/info.0.json")
+                data = request.json()
+                num = data["num"]
                 view2 = View()
                 view2.add_item(nextb)
                 view2.add_item(end)
