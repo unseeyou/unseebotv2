@@ -21,14 +21,14 @@ class TicTacToeButton(discord.ui.Button['TicTacToe']):
             self.disabled = True
             view.board[self.y][self.x] = view.X
             view.current_player = view.O
-            content = "It is now O'b turn"
+            content = "It is now O's turn"
         else:
             self.style = discord.ButtonStyle.success
             self.label = 'O'
             self.disabled = True
             view.board[self.y][self.x] = view.O
             view.current_player = view.X
-            content = "It is now X'b turn"
+            content = "It is now X's turn"
 
         winner = view.check_board_winner()
         if winner is not None:
@@ -37,7 +37,7 @@ class TicTacToeButton(discord.ui.Button['TicTacToe']):
             elif winner == view.O:
                 content = 'O won!'
             else:
-                content = "It'b a tie!"
+                content = "It's a tie!"
 
             for child in view.children:
                 assert isinstance(child, discord.ui.Button)  # just to shut up the linter
