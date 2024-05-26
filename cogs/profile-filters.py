@@ -49,7 +49,8 @@ class ProfileFilters(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command()
+    @app_commands.command(description="generates a Triggered GIF of the user's avatar")
+    @app_commands.describe(user="the user whose avatar you want to use, leave blank to use yourself")
     async def triggered(self, interaction: discord.Interaction, user: discord.Member = None):
         await interaction.response.defer()
         try:
