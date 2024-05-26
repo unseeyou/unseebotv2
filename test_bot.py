@@ -84,17 +84,17 @@ async def unseebot(ctx):
         "Hi! I'm unseebot, a bot made by unseeyou. Please feel free to report any issues to unseeyou via dms. Thanks!")
 
 
-@bot.hybrid_command(aliases=['trigger', 'trig'])
-async def triggered(ctx: commands.Context, user: discord.User = None):
-    await ctx.defer()
-    if user is None:
-        user = ctx.message.author
-    else:
-        pass
-    async with aiohttp.ClientSession() as session:
-        async with session.get(f'https://some-random-api.ml/canvas/triggered?avatar={user.avatar.url}') as response:
-            buffer = io.BytesIO(await response.read())
-    await ctx.send(file=discord.File(buffer, filename='triggered.gif'))
+# @bot.hybrid_command(aliases=['trigger', 'trig'])
+# async def triggered(ctx: commands.Context, user: discord.User = None):
+#     await ctx.defer()
+#     if user is None:
+#         user = ctx.message.author
+#     else:
+#         pass
+#     async with aiohttp.ClientSession() as session:
+#         async with session.get(f'https://some-random-api.ml/canvas/triggered/?avatar=https://{user.avatar.url}') as response:
+#             buffer = io.BytesIO(await response.read())
+#     await ctx.send(file=discord.File(buffer, filename='triggered.gif'))
 
 
 @bot.command()  # clear command
@@ -293,7 +293,7 @@ async def main():
         # first load the general cogs
         print('loading cogs...')
         cogs = ['epic', 'fakehack', 'help', 'hystats', 'meme', 'numbergame', 'poll', 'pplength',
-                'tictactoe', 'tts', 'twitch', 'urban', 'xkcd', 'music', 'pfp-gg', 'nim_game']
+                'tictactoe', 'tts', 'twitch', 'urban', 'xkcd', 'music', 'pfp-gg', 'nim_game', 'profile-filters']
         for cog in cogs:
             print(f"loading {cog}")
             await bot.load_extension(f"cogs.{cog}")

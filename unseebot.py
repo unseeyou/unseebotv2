@@ -71,19 +71,6 @@ async def on_member_remove(member):
         pass
 
 
-@bot.hybrid_command(aliases=['trigger', 'trig'], help='generate a gif of a triggered user')
-async def triggered(ctx, user: discord.User = None):
-    if user is None:
-        user = ctx.message.author
-    else:
-        pass
-    async with aiohttp.ClientSession() as session:
-        async with session.get(f'https://some-random-api.ml/canvas/triggered?avatar={user.avatar.url}') as response:
-            buffer = io.BytesIO(await response.read())
-
-    await ctx.send(file=discord.File(buffer, filename='triggered.gif'))
-
-
 @bot.command(pass_context=True)
 async def unseebot(ctx):
     await ctx.send('Check your dms!')
@@ -190,7 +177,7 @@ async def ping(ctx: commands.Context):
 async def main():
     async with bot:
         cogs = ['epic', 'fakehack', 'help', 'hystats', 'numbergame', 'nim_game', 'poll', 'pplength',
-                'tictactoe', 'tts', 'twitch', 'urban', 'xkcd', 'music', 'pfp-gg']
+                'tictactoe', 'tts', 'twitch', 'urban', 'xkcd', 'music', 'pfp-gg', 'profile-filters']
         for cog in cogs:
             print(f"loading {cog}")
             await bot.load_extension(f"cogs.{cog}")

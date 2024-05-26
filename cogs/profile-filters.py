@@ -1,6 +1,7 @@
 from PIL import Image
 import os
 import discord
+import traceback
 from discord.ext import commands
 from discord import app_commands
 
@@ -8,10 +9,10 @@ from discord import app_commands
 async def create_gif(member: discord.Member):
     base_width = 550
     bg = Image.new(mode="RGBA", size=(498, 670), color=(255, 255, 255, 255))
+    red = Image.new(mode="RGBA", size=(498, 670), color=(215, 21, 0, 1))
+    red.putalpha(85)
 
     triggered_bottom = Image.open("cogs/triggered.gif")
-    width, height = triggered_bottom.size
-    # print(width, height)
 
     filename = f"{member.id}-avatar.png"
     await member.avatar.save(filename)
@@ -23,16 +24,19 @@ async def create_gif(member: discord.Member):
 
     bg.paste(avatar, (0, 0))
     bg.paste(triggered_bottom, (0, 498))
+    bg.paste(red, (0, 0), red)
     frame_1 = bg.copy()
     triggered_bottom.seek(1)
     bg = Image.new(mode="RGBA", size=(498, 670), color=(255, 255, 255, 255))
     bg.paste(avatar, (-50, -40))
     bg.paste(triggered_bottom, (0, 498))
+    bg.paste(red, (0, 0), red)
     frame_2 = bg.copy()
     triggered_bottom.seek(2)
     bg = Image.new(mode="RGBA", size=(498, 670), color=(255, 255, 255, 255))
     bg.paste(avatar, (-30, 0))
     bg.paste(triggered_bottom, (0, 498))
+    bg.paste(red, (0, 0), red)
     frame_3 = bg
 
     frame_1.save(filename.replace(".png", ".gif"), save_all=True, append_images=[frame_2, frame_3], loop=0, duration=50)
@@ -47,11 +51,15 @@ class ProfileFilters(commands.Cog):
 
     @app_commands.command()
     async def triggered(self, interaction: discord.Interaction, user: discord.Member = None):
-        if user is None:
-            user = interaction.user
-        filename = await create_gif(user)
-        await interaction.response.send_message(file=discord.File(filename))
-        os.remove(filename)
+        await interaction.response.defer()
+        try:
+            if user is None:
+                user = interaction.user
+            filename = await create_gif(user)
+            await interaction.followup.send(file=discord.File(fp=filename, filename="triggered.gif"))
+            os.remove(filename)
+        except Exception as e:
+            traceback.print_exception(type(e), e, e.__traceback__)
 
 
 async def setup(bot):
