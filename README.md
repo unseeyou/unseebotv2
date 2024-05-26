@@ -15,4 +15,4 @@ HOW TO USE BOT:
 
 There are detailed guides and instructions in the [old repo](https://github.com/unseeyou/unseebot) which you could use if you need further assistance.
 
-If you want to invite my instance of the bot (cloud hosted), the link is https://discord.com/api/oauth2/authorize?client_id=915182238239449099&permissions=8&scope=bot%20applications.commands
+If you want to invite my instance of the bot (which is cloud hosted), the link is https://discord.com/oauth2/authorize?client_id=915182238239449099
