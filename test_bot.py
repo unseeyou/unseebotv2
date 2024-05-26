@@ -84,19 +84,6 @@ async def unseebot(ctx):
         "Hi! I'm unseebot, a bot made by unseeyou. Please feel free to report any issues to unseeyou via dms. Thanks!")
 
 
-# @bot.hybrid_command(aliases=['trigger', 'trig'])
-# async def triggered(ctx: commands.Context, user: discord.User = None):
-#     await ctx.defer()
-#     if user is None:
-#         user = ctx.message.author
-#     else:
-#         pass
-#     async with aiohttp.ClientSession() as session:
-#         async with session.get(f'https://some-random-api.ml/canvas/triggered/?avatar=https://{user.avatar.url}') as response:
-#             buffer = io.BytesIO(await response.read())
-#     await ctx.send(file=discord.File(buffer, filename='triggered.gif'))
-
-
 @bot.command()  # clear command
 @commands.has_permissions(manage_messages=True)
 async def clear(ctx, quantity: int):
