@@ -10,6 +10,7 @@ import datetime
 
 load_dotenv()
 TOKEN = os.getenv("HYPIXEL_API")
+# TOKEN = os.getenv("HYPIXEL_DEVKEY")
 
 
 async def request_stats(name):
