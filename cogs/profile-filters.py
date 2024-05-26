@@ -5,16 +5,16 @@ from discord.ext import commands
 from discord import app_commands
 
 
-def create_gif(member: discord.Member):
+async def create_gif(member: discord.Member):
     base_width = 550
     bg = Image.new(mode="RGBA", size=(498, 670), color=(255, 255, 255, 255))
 
     triggered_bottom = Image.open("cogs/triggered.gif")
     width, height = triggered_bottom.size
-    print(width, height)
+    # print(width, height)
 
     filename = f"{member.id}-avatar.png"
-    member.avatar.save(filename)
+    await member.avatar.save(filename)
 
     avatar = Image.open(filename)
     wpercent = (base_width / float(avatar.size[0]))
@@ -49,6 +49,10 @@ class ProfileFilters(commands.Cog):
     async def triggered(self, interaction: discord.Interaction, user: discord.Member = None):
         if user is None:
             user = interaction.user
-        filename = create_gif(user)
+        filename = await create_gif(user)
         await interaction.response.send_message(file=discord.File(filename))
         os.remove(filename)
+
+
+async def setup(bot):
+    await bot.add_cog(ProfileFilters(bot))
