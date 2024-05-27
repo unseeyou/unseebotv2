@@ -6,7 +6,7 @@ from discord.ext import commands
 from discord import app_commands
 
 
-async def create_gif(member: discord.Member):
+async def create_triggered_gif(member: discord.Member):
     base_width = 550
     bg = Image.new(mode="RGBA", size=(498, 670), color=(255, 255, 255, 255))
     red = Image.new(mode="RGBA", size=(498, 670), color=(215, 21, 0, 1))
@@ -58,7 +58,7 @@ class ProfileFilters(commands.Cog):
         try:
             if user is None:
                 user = interaction.user
-            filename = await create_gif(user)
+            filename = await create_triggered_gif(user)
             await interaction.followup.send(file=discord.File(fp=filename, filename="triggered.gif"))
             os.remove(filename)
         except Exception as e:
