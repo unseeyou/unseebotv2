@@ -45,6 +45,22 @@ async def create_triggered_gif(member: discord.Member):
     return filename.replace(".png", ".gif")
 
 
+async def create_blushing_png(member: discord.Member):
+    base_width = 550
+    bg = Image.new(mode="RGBA", size=(498, 670), color=(255, 255, 255, 255))
+    filename = f"{member.id}-avatar.png"
+    await member.avatar.save(filename)
+
+    avatar = Image.open(filename)
+    blush = Image.open("cogs/blush.png")
+
+    wpercent = (base_width / float(avatar.size[0]))
+    hsize = int((float(avatar.size[1]) * float(wpercent)))
+    avatar = avatar.resize((base_width, hsize), Image.Resampling.LANCZOS)
+
+    bg.paste(avatar, (0, 0))
+
+
 class ProfileFilters(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -54,6 +70,19 @@ class ProfileFilters(commands.Cog):
     @avatar.command(description="generates a Triggered GIF of the user's avatar")
     @app_commands.describe(user="the user whose avatar you want to use, leave blank to use yourself")
     async def triggered(self, interaction: discord.Interaction, user: discord.Member = None):
+        await interaction.response.defer()
+        try:
+            if user is None:
+                user = interaction.user
+            filename = await create_triggered_gif(user)
+            await interaction.followup.send(file=discord.File(fp=filename, filename="triggered.gif"))
+            os.remove(filename)
+        except Exception as e:
+            traceback.print_exception(type(e), e, e.__traceback__)
+
+    @avatar.command(name="blush", description="generates a blushing version of the user's avatar")
+    @app_commands.describe(user="the user whose avatar you want to use, leave blank to use yourself")
+    async def _blush(self, interaction: discord.Interaction, user: discord.Member = None):
         await interaction.response.defer()
         try:
             if user is None:
