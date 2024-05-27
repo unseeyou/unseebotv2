@@ -46,10 +46,12 @@ async def create_gif(member: discord.Member):
 
 
 class ProfileFilters(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(description="generates a Triggered GIF of the user's avatar")
+    avatar = app_commands.Group(name="avatar", description="commands for funny avatar filters and effects")
+
+    @avatar.command(description="generates a Triggered GIF of the user's avatar")
     @app_commands.describe(user="the user whose avatar you want to use, leave blank to use yourself")
     async def triggered(self, interaction: discord.Interaction, user: discord.Member = None):
         await interaction.response.defer()
