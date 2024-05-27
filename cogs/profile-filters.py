@@ -46,8 +46,10 @@ async def create_triggered_gif(member: discord.Member):
 
 
 async def create_blushing_png(member: discord.Member):
-    base_width = 550
-    bg = Image.new(mode="RGBA", size=(498, 670), color=(255, 255, 255, 255))
+    base_width = 1024
+    bg = Image.new(mode="RGBA", size=(1024, 1024), color=(255, 255, 255, 255))
+    pink = Image.new(mode="RGBA", size=(1024, 1024), color=(255, 128, 238, 255))
+    pink.putalpha(100)
     filename = f"{member.id}-avatar.png"
     await member.avatar.save(filename)
 
@@ -59,6 +61,11 @@ async def create_blushing_png(member: discord.Member):
     avatar = avatar.resize((base_width, hsize), Image.Resampling.LANCZOS)
 
     bg.paste(avatar, (0, 0))
+    bg.paste(pink, (0, 0), pink)
+    bg.paste(blush, (0, 0), blush)
+    bg.save(filename)
+
+    return filename
 
 
 class ProfileFilters(commands.Cog):
@@ -87,8 +94,8 @@ class ProfileFilters(commands.Cog):
         try:
             if user is None:
                 user = interaction.user
-            filename = await create_triggered_gif(user)
-            await interaction.followup.send(file=discord.File(fp=filename, filename="triggered.gif"))
+            filename = await create_blushing_png(user)
+            await interaction.followup.send(file=discord.File(fp=filename, filename="blushing.png"))
             os.remove(filename)
         except Exception as e:
             traceback.print_exception(type(e), e, e.__traceback__)
