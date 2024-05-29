@@ -12,7 +12,7 @@ async def create_triggered_gif(member: discord.Member):
     red = Image.new(mode="RGBA", size=(498, 670), color=(215, 21, 0, 1))
     red.putalpha(85)
 
-    triggered_bottom = Image.open("cogs/assets/triggered.gif")
+    triggered_bottom = Image.open("cogs/profileAssets/triggered.gif")
 
     filename = f"{member.id}-avatar.png"
     await member.avatar.save(filename)
@@ -54,7 +54,7 @@ async def create_blushing_png(member: discord.Member):
     await member.avatar.save(filename)
 
     avatar = Image.open(filename)
-    blush = Image.open("cogs/assets/blush.png")
+    blush = Image.open("cogs/profileAssets/blush.png")
 
     wpercent = (base_width / float(avatar.size[0]))
     hsize = int((float(avatar.size[1]) * float(wpercent)))
@@ -66,6 +66,29 @@ async def create_blushing_png(member: discord.Member):
     bg.save(filename)
 
     return filename
+
+
+async def create_jail_png(member: discord.Member):
+    base_width = 512
+    filename = f"{member.id}-avatar.png"
+
+    await member.avatar.save(filename)
+    avatar = Image.open(filename)
+
+    wpercent = (base_width / float(avatar.size[0]))
+    hsize = int((float(avatar.size[1]) * float(wpercent)))
+    avatar = avatar.resize((base_width, hsize), Image.Resampling.LANCZOS)
+
+    jail = Image.open("cogs/profileAssets/jail.png").convert("RGBA")
+    wpercent = (base_width / float(jail.size[0]))
+    hsize = int((float(jail.size[1]) * float(wpercent)))
+    jail = jail.resize((base_width, hsize), Image.Resampling.LANCZOS)
+
+    avatar.paste(jail, (0, 0), jail)
+    avatar.save(filename)
+
+    return filename
+
 
 
 class ProfileFilters(commands.Cog):
@@ -96,6 +119,19 @@ class ProfileFilters(commands.Cog):
                 user = interaction.user
             filename = await create_blushing_png(user)
             await interaction.followup.send(file=discord.File(fp=filename, filename="blushing.png"))
+            os.remove(filename)
+        except Exception as e:
+            traceback.print_exception(type(e), e, e.__traceback__)
+
+    @avatar.command(name="jail", description="naughty user is sent to jail")
+    @app_commands.describe(user="the user whose avatar you want to use, leave blank to use yourself")
+    async def _jail(self, interaction: discord.Interaction, user: discord.Member = None):
+        await interaction.response.defer()
+        try:
+            if user is None:
+                user = interaction.user
+            filename = await create_jail_png(user)
+            await interaction.followup.send(file=discord.File(fp=filename, filename="jail.png"))
             os.remove(filename)
         except Exception as e:
             traceback.print_exception(type(e), e, e.__traceback__)
