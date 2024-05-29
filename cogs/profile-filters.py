@@ -90,6 +90,10 @@ async def create_jail_png(member: discord.Member):
     return filename
 
 
+async def create_wanted_png(member: discord.Member):
+    wanted_poster = Image.open("cogs/profileAssets/wanted.png")
+    print(wanted_poster.size)
+
 
 class ProfileFilters(commands.Cog):
     def __init__(self, bot: commands.Bot):
