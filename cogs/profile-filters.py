@@ -12,7 +12,7 @@ async def create_triggered_gif(member: discord.Member):
     red = Image.new(mode="RGBA", size=(498, 670), color=(215, 21, 0, 1))
     red.putalpha(85)
 
-    triggered_bottom = Image.open("cogs/triggered.gif")
+    triggered_bottom = Image.open("cogs/assets/triggered.gif")
 
     filename = f"{member.id}-avatar.png"
     await member.avatar.save(filename)
@@ -54,7 +54,7 @@ async def create_blushing_png(member: discord.Member):
     await member.avatar.save(filename)
 
     avatar = Image.open(filename)
-    blush = Image.open("cogs/blush.png")
+    blush = Image.open("cogs/assets/blush.png")
 
     wpercent = (base_width / float(avatar.size[0]))
     hsize = int((float(avatar.size[1]) * float(wpercent)))
