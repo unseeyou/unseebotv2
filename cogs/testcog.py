@@ -1,5 +1,8 @@
 from PIL import Image, ImageDraw, ImageFont
-import traceback, discord
+import traceback, discord, asyncio
+from concurrent.futures import ThreadPoolExecutor
+
+POOL = ThreadPoolExecutor()
 
 def create_wanted_png():
     base_width = 800
@@ -16,4 +19,13 @@ def create_wanted_png():
     wanted_poster.show()
 
 
-create_wanted_png()
+async def task_ImageGeneration(loop):
+    result = await loop.run_in_executor(executor=POOL, func=create_wanted_png())
+    return result
+
+async def main():
+    loop = asyncio.get_event_loop()
+    loop.create_task(task_ImageGeneration(loop))
+
+
+asyncio.run(main())
