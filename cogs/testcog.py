@@ -23,9 +23,10 @@ async def task_ImageGeneration(loop):
     result = await loop.run_in_executor(executor=POOL, func=create_wanted_png())
     return result
 
+
 async def main():
     loop = asyncio.get_event_loop()
-    loop.create_task(task_ImageGeneration(loop))
+    await loop.create_task(task_ImageGeneration(loop))
 
 
 asyncio.run(main())
