@@ -4,6 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 POOL = ThreadPoolExecutor()
 
+
 def create_wanted_png():
     base_width = 800
     wanted_poster = Image.open("profileAssets/wanted.png")  # (1545, 2000)
