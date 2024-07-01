@@ -9,34 +9,29 @@ class TicTacToeButton(discord.ui.Button['TicTacToe']):
         self.y = y
 
     async def callback(self, interaction: discord.Interaction):
-        await interaction.response.defer()
         view: TicTacToe = self.view
         state = view.board[self.y][self.x]
-        if state in (view.X, view.O):  # not sure what this does but I'm keeping it so it doesn't break
+        if state in (view.X, view.O):  # if the slot is already taken by a player
+            await interaction.response.send_message(
+                'There is already a ' + ('X' if state == view.X else 'O') + ' in this slot!', ephemeral=True
+            )
             return
-
-        if view.players["X"] is None and view.current_player == view.X:
-            view.players["X"] = interaction.user.id
-
-        elif view.players["O"] is None and view.current_player == view.O:
-            view.players["O"] = interaction.user.id
-
-        if view.current_player == view.X and view.players["X"] == interaction.user.id:
+        if view.current_player == view.X and view.players["X"] == interaction.user:
             self.style = discord.ButtonStyle.danger
             self.label = 'X'
             self.disabled = True
             view.board[self.y][self.x] = view.X
             view.current_player = view.O
-            content = f"It is now {interaction.guild.get_member(view.players['O']).mention}'s turn (playing as O)"
-        elif view.current_player == view.O and view.players["O"] == interaction.user.id:
+            content = f"It is now {view.players['O'].mention}'s turn (playing as O)"
+        elif view.current_player == view.O and view.players["O"] == interaction.user:
             self.style = discord.ButtonStyle.success
             self.label = 'O'
             self.disabled = True
             view.board[self.y][self.x] = view.O
             view.current_player = view.X
-            content = f"It is now {interaction.guild.get_member(view.players['X']).mention}'s turn (playing as X)"
+            content = f"It is now {view.players['X'].mention}'s turn (playing as X)"
         else:
-            await interaction.followup.send(
+            await interaction.response.send_message(
                 f'Someone else is playing as {"X" if view.current_player == view.O else "O"} already!', ephemeral=True
             )
             return
@@ -44,20 +39,17 @@ class TicTacToeButton(discord.ui.Button['TicTacToe']):
         winner = view.check_board_winner()
         if winner is not None:
             if winner == view.X:
-                content = f'{interaction.guild.get_member(view.players["X"]).mention} won as X!'
+                content = f'{view.players["X"].mention} won as X!'
             elif winner == view.O:
-                content = f'{interaction.guild.get_member(view.players["O"]).mention} won as O!'
+                content = f'{view.players["O"].mention} won as O!'
             else:
                 content = "It's a tie!"
 
             for child in view.children:
-                assert isinstance(child, discord.ui.Button)  # just to shut up the linter
                 child.disabled = True
-
             view.stop()
 
-        msg = await interaction.original_response()
-        await msg.edit(content=content, view=view)
+        await interaction.response.edit_message(content=content, view=view)
 
 
 class TicTacToe(discord.ui.View):
@@ -65,9 +57,9 @@ class TicTacToe(discord.ui.View):
     O = 1
     Tie = 2
 
-    def __init__(self):
+    def __init__(self, player1: discord.Member, player2: discord.Member):
         super().__init__()
-        self.players: dict[str, int | None] = {"X": None, "O": None}
+        self.players: dict[str, discord.Member] = {"X": player1, "O": player2}
         self.current_player = self.X
         self.board = [
             [0, 0, 0],
@@ -117,8 +109,11 @@ class TicTacToe(discord.ui.View):
 
 class Coms(commands.Cog):
     @commands.hybrid_command(aliases=['noughtsandcrosses', 'XO'], help='a very scuffed tic tac toe game')
-    async def tictactoe(self, ctx):
-        await ctx.send('Tic Tac Toe: X goes first', view=TicTacToe())
+    async def tictactoe(self, ctx: commands.Context, opponent: discord.Member):
+        embed = discord.Embed(description=f"{ctx.author.mention} (X) vs {opponent.mention} (O)",
+                              colour=discord.Colour.og_blurple(),
+                              title="Tic Tac Toe 1v1")
+        await ctx.send('Tic Tac Toe: X goes first', view=TicTacToe(player1=ctx.author, player2=opponent), embed=embed)
 
 
 async def setup(bot):
