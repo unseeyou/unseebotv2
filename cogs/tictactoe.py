@@ -12,7 +12,7 @@ class TicTacToeButton(discord.ui.Button['TicTacToe']):
         await interaction.response.defer()
         view: TicTacToe = self.view
         state = view.board[self.y][self.x]
-        if state in (view.X, view.O):
+        if state in (view.X, view.O):  # not sure what this does but I'm keeping it so it doesn't break
             return
 
         if view.players["X"] is None and view.current_player == view.X:
