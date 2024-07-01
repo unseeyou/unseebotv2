@@ -9,7 +9,7 @@ class TicTacToeButton(discord.ui.Button['TicTacToe']):
         self.y = y
 
     async def callback(self, interaction: discord.Interaction):
-        assert self.view is not None
+        await interaction.response.defer()
         view: TicTacToe = self.view
         state = view.board[self.y][self.x]
         if state in (view.X, view.O):
@@ -27,16 +27,16 @@ class TicTacToeButton(discord.ui.Button['TicTacToe']):
             self.disabled = True
             view.board[self.y][self.x] = view.X
             view.current_player = view.O
-            content = "It is now O's turn"
+            content = f"It is now {interaction.guild.get_member(view.players['O']).mention}'s turn (playing as O)"
         elif view.current_player == view.O and view.players["O"] == interaction.user.id:
             self.style = discord.ButtonStyle.success
             self.label = 'O'
             self.disabled = True
             view.board[self.y][self.x] = view.O
             view.current_player = view.X
-            content = "It is now X's turn"
+            content = f"It is now {interaction.guild.get_member(view.players['X']).mention}'s turn (playing as X)"
         else:
-            await interaction.response.send_message(
+            await interaction.followup.send(
                 f'Someone else is playing as {"X" if view.current_player == view.O else "O"} already!', ephemeral=True
             )
             return
@@ -44,9 +44,9 @@ class TicTacToeButton(discord.ui.Button['TicTacToe']):
         winner = view.check_board_winner()
         if winner is not None:
             if winner == view.X:
-                content = 'X won!'
+                content = f'{interaction.guild.get_member(view.players["X"]).mention} won as X!'
             elif winner == view.O:
-                content = 'O won!'
+                content = f'{interaction.guild.get_member(view.players["O"]).mention} won as O!'
             else:
                 content = "It's a tie!"
 
@@ -56,7 +56,8 @@ class TicTacToeButton(discord.ui.Button['TicTacToe']):
 
             view.stop()
 
-        await interaction.response.edit_message(content=content, view=view)
+        msg = await interaction.original_response()
+        await msg.edit(content=content, view=view)
 
 
 class TicTacToe(discord.ui.View):
