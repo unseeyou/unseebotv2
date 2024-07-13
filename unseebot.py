@@ -193,5 +193,5 @@ async def main():
         await bot.load_extension("utils.log")
         await bot.start(TOKEN)
 
-
-asyncio.run(main())
+if __name__ == '__main__':
+    asyncio.run(main())
