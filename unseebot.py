@@ -18,7 +18,7 @@ bot = commands.Bot(
     help_command=None,
     case_insensitive=True,
     intents=intents,
-    activity=discord.Game('With your mind - >help'),
+    activity=discord.Game('With your mind'),
     status=discord.Status.online
 )
 
@@ -183,7 +183,7 @@ async def ping(ctx: commands.Context):
 
 async def main():
     async with bot:
-        cogs = ['epic', 'fakehack', 'help', 'hystats', 'numbergame', 'nim_game', 'poll', 'pplength',
+        cogs = ['epic', 'fakehack', 'hystats', 'numbergame', 'nim_game', 'poll', 'pplength',
                 'tictactoe', 'tts', 'twitch', 'urban', 'xkcd', 'music', 'pfp-gg', 'profile-filters']
         for cog in cogs:
             print(f"loading {cog}")
