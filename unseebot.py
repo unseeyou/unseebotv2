@@ -128,13 +128,10 @@ async def sudo(ctx, member: discord.Member, *, message=None):
         await ctx.send(f'SyntaxError: a person and message must be specified')
         return
 
-    webhook = await ctx.channel.create_webhook(name=member.name)
+    webhook: discord.Webhook = await ctx.channel.create_webhook(name=member.display_name)
     await webhook.send(
-        str(message), username=member.nick, avatar_url=member.avatar)
-
-    webhooks = await ctx.channel.webhooks()
-    for webhook in webhooks:
-        await webhook.delete()
+        str(message), username=member.display_name, avatar_url=member.display_avatar)
+    await webhook.delete()
 
 
 @bot.hybrid_command(help='repeats your message')

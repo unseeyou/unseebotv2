@@ -39,12 +39,6 @@ async def on_ready():
 
 
 @bot.event
-async def setup_hook():
-    print('loading slash commands...')
-    await bot.tree.sync(guild=None)
-
-
-@bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send("Sorry, this command does not exist. Contact unseeyou#2912 if you think this should be added.")
@@ -289,6 +283,7 @@ async def main():
         # now load the utils
         await bot.load_extension("utils.log")
         await bot.load_extension("utils.controls")
+        await bot.load_extension("web_panel.test")
 
         print('now actually starting the bot...')
         await bot.start(TOKEN)
